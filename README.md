@@ -16,8 +16,7 @@
 * Mongo DB
 * REST
 
-### DB Player Diagram
+### DB Spotify Diagram
 
-![Player Diagram]("helpers/pictures/Spotify Diagram.drawio.png")
-
+![Diagram](helpers/pictures/Spotify%20Diagram.drawio.png)
 
