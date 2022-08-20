@@ -1,17 +1,30 @@
-import React from 'react';
+import React, {useState} from 'react';
 import MainLayout from "../../layouts/MainLayout";
-import {Box, Button, Card, Grid} from "@mui/material";
+import {Box, Button, Card, Grid, TextField} from "@mui/material";
 import {useRouter} from "next/router";
 import TrackList from "../../components/TrackList";
 import {useTypedSelector} from "../../hooks/useTypedSelector";
 import {wrapper} from "../../store";
-import {fetchTracks} from "../../store/action-creators/track";
-import axios from "axios";
-import {TrackActionTypes} from "../../types/track";
+import {fetchTracks, searchTracks} from "../../store/action-creators/track";
+import {useDispatch} from "react-redux";
 
 const Index = () => {
     const router = useRouter();
     const {tracks, error} = useTypedSelector(state => state.track);
+    const [query, setQuery] = useState<string>("");
+    const dispatch = useDispatch();
+    const [timer, setTimer] = useState(null);
+
+    const search = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setQuery(e.target.value);
+        if (timer) {
+            clearTimeout(timer);
+        }
+
+        setTimer(setTimeout(async () => {
+            await searchTracks(dispatch, query);
+        }, 1000));
+    }
 
     if (error) {
         return <MainLayout>
@@ -21,7 +34,7 @@ const Index = () => {
 
     return (
         <>
-            <MainLayout>
+            <MainLayout title="Music platform | Tracks">
                 <Grid container justifyContent="center">
                     <Card style={{width: "900px"}}>
                         <Box p={3}>
@@ -32,6 +45,9 @@ const Index = () => {
                                 </Button>
                             </Grid>
                         </Box>
+                        <TextField fullWidth
+                                   value={query}
+                                   onChange={search}/>
                         <TrackList tracks={tracks}/>
                     </Card>
                 </Grid>
