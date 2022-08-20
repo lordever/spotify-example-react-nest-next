@@ -5,9 +5,16 @@ import {SequelizeModule} from "@nestjs/sequelize";
 import {ConfigModule} from "@nestjs/config";
 import {Track} from "./track/track.model";
 import {Comment} from "./comment/comment.model";
+import { FileService } from './file/file.service';
+import { FileModule } from './file/file.module';
+import {ServeStaticModule} from "@nestjs/serve-static";
+import * as path from "path";
 
 @Module({
     imports: [
+        ServeStaticModule.forRoot({
+            rootPath: path.resolve(__dirname, 'static'),
+        }),
         ConfigModule.forRoot({
             envFilePath: `.${process.env.NODE_ENV}.env`
         }),
@@ -24,7 +31,8 @@ import {Comment} from "./comment/comment.model";
             ],
             autoLoadModels: true
         }),
-        TrackModule
+        TrackModule,
+        FileModule
     ]
 })
 export class AppModule {
