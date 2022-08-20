@@ -19,6 +19,9 @@ export class Track extends Model<Track, TrackCreationAttribute> {
     @Column({type: DataType.STRING, allowNull: false})
     name: string;
 
+    @Column({type: DataType.STRING, allowNull: false})
+    artist: string;
+
     @Column({type: DataType.STRING, allowNull: true})
     text: string;
 
